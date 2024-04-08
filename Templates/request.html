@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Request Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #8EC5FC;
+            background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        form {
+            background: #fff;
+            background-image: linear-gradient(145deg, #fdfbfb 0%, #ebedee 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        h2 {
+            color: #6A5ACD;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #333;
+        }
+        input[type=text], input[type=date], input[type=time] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input[type=text]:focus, input[type=date]:focus, input[type=time]:focus {
+            border-color: #6A5ACD;
+            outline: none;
+        }
+        input[type=submit] {
+            width: 100%;
+            background-color: #6A5ACD;
+            color: white;
+            padding: 15px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        input[type=submit]:hover {
+            background-color: #5D5C61;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="/request" onsubmit="return validateForm()">
+        <h2>Request a Cab</h2>
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" required>
+        
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function validateForm() {
+            let destination = document.getElementById("destination").value;
+            let date = document.getElementById("date").value;
+            let time = document.getElementById("time").value;
+            if (!destination || !date || !time) {
+                alert("All fields must be filled out");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

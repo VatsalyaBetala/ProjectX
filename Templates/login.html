@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN </title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom right, #005AA7, #FFFDE4);
+            color: #333;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+            min-height: 100vh;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #005AA7;
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #005AA7;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #003D73;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: calc(100% - 40px);
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>UniRide Share - Request a Cab</h2>
+        <form method="post" class="request-form">
+            
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <button type="submit" class="submit-btn">Submit Request</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options</title>
+</head>
+<body>
+    <h1>Existing Trip Found</h1>
+    <p>You already have a trip scheduled:</p>
+    <p>Name: {{ existing_trip.name }}</p>
+    <p>Email: {{ existing_trip.email }}</p>
+    <p>Phone Number: {{ existing_trip.phone_number }}</p>
+    <p>Destination: {{ existing_trip.destination }}</p>
+    <p>Date and Time: {{ existing_trip.time.strftime('%Y-%m-%d %H:%M') }}</p>
+    
+    <form method="post">
+        <input type="hidden" name="delete_trip" value="true">
+        <button type="submit">Delete Existing Trip</button>
+    </form>
+    
+    <p>Or you can go back and modify your request.</p>
+    <a href="{{ url_for('cab_request') }}">Go Back</a>
+</body>
+</html>

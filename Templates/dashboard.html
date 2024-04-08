@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 22px;
+            color: #343a40;
+            margin-bottom: 16px;
+        }
+        .card {
+            background: linear-gradient(145deg, #f8f9fa, #dee2e6);
+            border-left: 5px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            margin-bottom: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .trip-detail {
+            margin-bottom: 8px;
+            color: #6c757d; /* Lighter font color */
+        }
+        .trip-detail strong {
+            color: #007bff;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        a, .button {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        a:hover, .button:hover {
+            background-color: #0056b3;
+        }
+        .button {
+            border: none;
+            outline: none;
+            font: inherit;
+        }
+        form {
+            display: inline;
+        }
+        .no-requests {
+            text-align: center;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Dashboard</h1>
+        
+        <section>
+            <h2>Trips You've Created</h2>
+            {% if created_trips %}
+                {% for trip in created_trips %}
+                    <div class="card">
+                        <div class="trip-detail"><strong>Date:</strong> {{ trip.time.strftime('%Y-%m-%d') }}</div>
+                        <div class="trip-detail"><strong>Name:</strong> {{ trip.name }}</div>
+                        <div class="trip-detail"><strong>Email:</strong> {{ trip.creator_email }}</div>
+                        <div class="trip-detail"><strong>Time:</strong> {{ trip.time.strftime('%H:%M') }}</div>
+                        <div class="trip-detail"><strong>Destination:</strong> {{ trip.destination }}</div>
+                        <div class="trip-detail"><strong>Participants:</strong>
+                            {% if trip.participants %}
+                                {% for participant in trip.participants %}
+                                    {{ participant.name }} ({{ participant.email }});
+                                {% endfor %}
+                            {% else %}
+                                No participants yet.
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-requests">You haven't created any trips yet.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Requests Received to Join Your Trips</h2>
+            <ul>
+                {% if received_requests %}
+                    {% for join_request in received_requests %}
+                        <li class="card">
+                            Trip to {{ join_request.cab_request.destination }} at {{ join_request.cab_request.time.strftime('%Y-%m-%d %H:%M') }}<br>
+                            Requested by: {{ join_request.requester_email }}
+                            <div style="margin-top: 10px;">
+                                <form action="{{ url_for('handle_join_request', join_request_id=join_request.id, action='accept') }}" method="post">
+                                    <button class="button" type="submit" name="response" value="accept">Accept</button>
+                                </form>
+                                <form action="{{ url_for('handle_join_request', join_request_id=join_request.id, action='decline') }}" method="post" style="margin-left: 8px;">
+                                    <button class="button" type="submit" name="response" value="decline">Decline</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-requests">No received requests.</p>
+                {% endif %}
+            </ul>
+        </section>
+
+        <section>
+            <h2>Requests You've Sent to Join Trips</h2>
+            <ul>
+                {% if sent_requests %}
+                    {% for request in sent_requests %}
+                        <li class="card">
+                            Request to join trip to {{ request.cab_request.destination }} on {{ request.cab_request.time.strftime('%Y-%m-%d %H:%M') }}<br>
+                            Status: {% if request.accepted %} Accepted {% else %} Pending {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-requests">You haven't sent any requests to join trips.</p>
+                {% endif %}
+            </ul>
+        </section>
+
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>
