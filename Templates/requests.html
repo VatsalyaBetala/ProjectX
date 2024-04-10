@@ -89,6 +89,16 @@
             }
         }
     </style>
+
+    <script>
+        function disableButton(btn){
+            btn.disabled = true;
+            btn.innerText = 'Requested';
+            btn.style.backgroundColor = '#ccc';
+            btn.style.cursor = 'default';
+        }
+    </script>
+    
 </head>
 <body>
     <h1>List of Cab Share Requests</h1>
@@ -108,15 +118,21 @@
 
     <div class="requests-grid">
         {% for request in requests %}
-        <div class="request-box">
-            <p><strong>Name:</strong> {{ request.name }}</p>
-            <p><strong>Destination:</strong> {{ request.destination }}</p>
-            <p><strong>Time:</strong> {{ request.time.strftime('%Y-%m-%d %H:%M') }}</p>
-            <form action="{{ url_for('join_trip', cab_request_id=request.id) }}" method="post">
+    <div class="request-box">
+        <p><strong>Name:</strong> {{ request.name }}</p>
+        <p><strong>Destination:</strong> {{ request.destination }}</p>
+        <p><strong>Time:</strong> {{ request.time.strftime('%Y-%m-%d %H:%M') }}</p>
+        <form action="{{ url_for('join_trip', cab_request_id=request.id) }}" method="post">
+            {% if request.id in requested_trip_ids %}
+                <button type="submit" class="request-join-btn" disabled>Requested</button>
+            {% else %}
                 <button type="submit" class="request-join-btn">Request to Join</button>
-            </form>
-        </div>
-        {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+    {% endfor %}
+
+
     </div>
 
     <a href="{{ url_for('home_page') }}" class="back-btn">Back to Home</a>

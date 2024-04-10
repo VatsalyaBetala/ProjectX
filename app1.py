@@ -29,6 +29,7 @@ mail = Mail(app)
 # After initializing your Flask app and SQLAlchemy db
 migrate = Migrate(app, db)
 
+
 # Define the database models
 class TemporaryLogin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -183,10 +184,17 @@ def cab_request():
 
     return render_template('request.html')
 
-@app.route('/requests')
+@app.route('/list_requests')
 def list_requests():
+    user_email = session.get('user_email')
+    # Assuming `requests` is a list of trip objects
     requests = CabRequest.query.all()
-    return render_template('requests.html', requests=requests)
+    # You would also fetch the join requests made by the user
+    user_join_requests = JoinRequest.query.filter_by(requester_email=user_email).all()
+    # Create a set of trip IDs that the user has already requested to join
+    requested_trip_ids = {req.cab_request_id for req in user_join_requests}
+
+    return render_template('requests.html', requests=requests, requested_trip_ids=requested_trip_ids)
 
 @app.route('/available')
 def available_requests():
@@ -295,3 +303,6 @@ def handle_join_request(join_request_id, action):
         db.session.commit()
 
     return redirect(url_for('dashboard'))
+
+
+
