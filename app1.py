@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from flask_mail import Mail, Message
 import secrets
-from uuid import uuid4  # Import uuid4 to generate unique IDs
-from flask import flash  # Add this to your imports at the beginning of your Flask app
+from uuid import uuid4  
+from flask import flash
 from flask_migrate import Migrate
 
 
